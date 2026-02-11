@@ -19,6 +19,22 @@ export function Radar({ player1, player2 }) {
     const player1Metrics = calculate90Metrics(player1);
     const player2Metrics = calculate90Metrics(player2);
 
+    // Normalize metrics to 0-10 scale for better visualization
+    // Adjust these max values based on your data ranges
+    const normalizeMetric = (value, maxValue) => {
+        return Math.min((value / maxValue) * 10, 10);
+    };
+
+    // Define reasonable max values for each metric (adjust based on your data)
+    const maxValues = {
+        goalsPer90: 1.0,      // ~1 goal per 90 is excellent
+        assistsPer90: 0.8,    // ~0.8 assists per 90 is excellent
+        contributionsPer90: 1.5, // ~1.5 G+A per 90 is excellent
+        xGPer90: 1.0,         // ~1 xG per 90 is excellent
+        xAPer90: 0.8,         // ~0.8 xA per 90 is excellent
+        PI: 100,              // Adjust this based on your PI scale (50, 100, 150, etc.)
+    };
+
     const data = {
         labels: [
             "Goals/90",
@@ -26,36 +42,38 @@ export function Radar({ player1, player2 }) {
             "G+A/90",
             "xG/90",
             "xA/90",
-            "PI"
+            "PI (scaled)"
         ],
         datasets: [
             {
                 label: player1.name,
                 data: [
-                    parseFloat(player1Metrics.goalsPer90),
-                    parseFloat(player1Metrics.assistsPer90),
-                    parseFloat(player1Metrics.contributionsPer90),
-                    parseFloat(player1Metrics.xGPer90),
-                    parseFloat(player1Metrics.xAPer90),
-                    player1Metrics.PI / 10, // Scale down PI for visibility
+                    normalizeMetric(parseFloat(player1Metrics.goalsPer90), maxValues.goalsPer90),
+                    normalizeMetric(parseFloat(player1Metrics.assistsPer90), maxValues.assistsPer90),
+                    normalizeMetric(parseFloat(player1Metrics.contributionsPer90), maxValues.contributionsPer90),
+                    normalizeMetric(parseFloat(player1Metrics.xGPer90), maxValues.xGPer90),
+                    normalizeMetric(parseFloat(player1Metrics.xAPer90), maxValues.xAPer90),
+                    normalizeMetric(player1Metrics.PI, maxValues.PI),
                 ],
                 backgroundColor: "rgba(59,130,246,0.2)",
                 borderColor: "rgba(59,130,246,1)",
                 borderWidth: 2,
+                rawData: player1Metrics, // Store original values for tooltip
             },
             {
                 label: player2.name,
                 data: [
-                    parseFloat(player2Metrics.goalsPer90),
-                    parseFloat(player2Metrics.assistsPer90),
-                    parseFloat(player2Metrics.contributionsPer90),
-                    parseFloat(player2Metrics.xGPer90),
-                    parseFloat(player2Metrics.xAPer90),
-                    player2Metrics.PI / 10, // Scale down PI for visibility
+                    normalizeMetric(parseFloat(player2Metrics.goalsPer90), maxValues.goalsPer90),
+                    normalizeMetric(parseFloat(player2Metrics.assistsPer90), maxValues.assistsPer90),
+                    normalizeMetric(parseFloat(player2Metrics.contributionsPer90), maxValues.contributionsPer90),
+                    normalizeMetric(parseFloat(player2Metrics.xGPer90), maxValues.xGPer90),
+                    normalizeMetric(parseFloat(player2Metrics.xAPer90), maxValues.xAPer90),
+                    normalizeMetric(player2Metrics.PI, maxValues.PI),
                 ],
                 backgroundColor: "rgba(236,72,153,0.2)",
                 borderColor: "rgba(236,72,153,1)",
                 borderWidth: 2,
+                rawData: player2Metrics, // Store original values for tooltip
             }
         ]
     };
@@ -66,8 +84,12 @@ export function Radar({ player1, player2 }) {
         scales: {
             r: {
                 beginAtZero: true,
+                max: 10,
                 ticks: {
-                    stepSize: 0.2
+                    stepSize: 2,
+                    callback: function(value) {
+                        return value.toFixed(0);
+                    }
                 }
             }
         },
@@ -79,15 +101,24 @@ export function Radar({ player1, player2 }) {
                 callbacks: {
                     label: function (context) {
                         let label = context.dataset.label || '';
+                        const rawData = context.dataset.rawData;
+                        const dataIndex = context.dataIndex;
+                        
                         if (label) {
                             label += ': ';
                         }
-                        // Scale PI back up for display
-                        if (context.label === 'PI') {
-                            label += (context.parsed.r * 10).toFixed(1);
+                        
+                        // Show original values in tooltip
+                        const metricNames = ['goalsPer90', 'assistsPer90', 'contributionsPer90', 'xGPer90', 'xAPer90', 'PI'];
+                        const metricName = metricNames[dataIndex];
+                        const originalValue = rawData?.[metricName] ?? 0;
+                        
+                        if (metricName === 'PI') {
+                            label += `${originalValue} (scaled: ${(context.parsed?.r ?? 0).toFixed(1)}/10)`;
                         } else {
-                            label += context.parsed.r.toFixed(2);
+                            label += `${originalValue} (scaled: ${(context.parsed?.r ?? 0).toFixed(1)}/10)`;
                         }
+                        
                         return label;
                     }
                 }
@@ -97,7 +128,12 @@ export function Radar({ player1, player2 }) {
 
     return (
         <div style={{ height: '400px' }}>
-            <RadarChartJS data={data} options={options} />
+            <RadarChartJS 
+                key={`radar-${player1?.id || 'none'}-${player2?.id || 'none'}`}
+                data={data} 
+                options={{...options, maintainAspectRatio: false}}
+                redraw={true}
+            />
         </div>
     );
 }

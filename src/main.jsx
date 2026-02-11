@@ -25,6 +25,16 @@ ChartJS.register(
   Filler              // for Radar chart fill
 );
 
+import { MatrixController, MatrixElement } from "chartjs-chart-matrix";
+
+ChartJS.register(
+  LinearScale,
+  Tooltip,
+  Legend,
+  MatrixController,
+  MatrixElement
+);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />

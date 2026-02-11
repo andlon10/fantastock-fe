@@ -7,6 +7,8 @@ import ScatterPlot from "./components/ScatterPlot";
 import RadarChart from "./components/RadarChart";
 import Heatmap from "./components/Heatmap";
 import { Comparator } from "./comparator/Comparator";
+import TopBar from "./components/TopBar";
+import Footer from "./components/Footer";
 
 function App() {
   const [players, setPlayers] = useState([]);
@@ -82,30 +84,13 @@ function App() {
   );
   
   return (
-    // <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, px: { xs: 1, sm: 2 } }}>
-    //   <Typography variant="h4" component="h1" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, mb: { xs: 2, sm: 3, md: 4 } }}>
-    //     Serie A 2026 Fantasy Dashboard - Player Comparison
-    //   </Typography>
-      
-      
-    //   <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
-    //     {/* Left Section - Player 1 */}
-    //     <Grid item xs={12} lg={6}>
-    //       {renderPlayerSection(selectedPlayer1, setSelectedPlayer1, "Player 1")}
-    //     </Grid>
-        
-    //     {/* Right Section - Player 2 */}
-    //     <Grid item xs={12} lg={6}>
-    //       {renderPlayerSection(selectedPlayer2, setSelectedPlayer2, "Player 2")}
-    //     </Grid>
-    //   </Grid>
-    // </Container>
-    <>
-    <Typography variant="h4" component="h1" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, mb: { xs: 2, sm: 3, md: 4 } }}>
-    Serie A 2026 Fantasy Dashboard - Player Comparison
-    </Typography>
-    <Comparator players={players} avgStats={avgStats} />
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <TopBar />
+      <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, px: { xs: 1, sm: 2 }, flex: 1 }}>
+        <Comparator players={players} avgStats={avgStats} />
+      </Container>
+      <Footer />
+    </Box>
   );
 }
 
