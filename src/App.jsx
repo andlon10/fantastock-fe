@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Stack, Container, Box, Paper, Typography, Grid } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import PlayerSelector from "./components/PlayerSelector";
 import PlayerMetrics from "./components/PlayerMetrics";
 import ScatterPlot from "./components/ScatterPlot";
@@ -13,12 +13,20 @@ import Footer from "./components/Footer";
 function App() {
   const [players, setPlayers] = useState([]);
 
-  const [avgStats, setAvgStats] = useState({goals:0, assists:0, xG:0, xA:0, minutes:0, PI:0});
+  const [avgStats, setAvgStats] = useState({
+    goals: 0,
+    assists: 0,
+    xG: 0,
+    xA: 0,
+    minutes: 0,
+    PI: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
-    axios.get("http://localhost:8000/api/players")
+    // axios.get("http://localhost:8000/api/players").then(res => {
+    axios
+      .get("http://localhost:8000/api/players?league=Serie_A&season=2025&min_minutes=300")
       .then(res => {
         setPlayers(res.data);
         setLoading(false);
@@ -26,27 +34,32 @@ function App() {
         const mids = res.data.filter(p => p.position === "MID");
         if (mids.length) {
           setAvgStats({
-            goals: mids.reduce((a,b)=>a+b.goals,0)/mids.length,
-            assists: mids.reduce((a,b)=>a+b.assists,0)/mids.length,
-            xG: mids.reduce((a,b)=>a+b.xG,0)/mids.length,
-            xA: mids.reduce((a,b)=>a+b.xA,0)/mids.length,
-            minutes: mids.reduce((a,b)=>a+b.minutes,0)/mids.length,
-            PI: mids.reduce((a,b)=>a+(b.PI||0),0)/mids.length
+            goals: mids.reduce((a, b) => a + b.goals, 0) / mids.length,
+            assists: mids.reduce((a, b) => a + b.assists, 0) / mids.length,
+            xG: mids.reduce((a, b) => a + b.xG, 0) / mids.length,
+            xA: mids.reduce((a, b) => a + b.xA, 0) / mids.length,
+            minutes: mids.reduce((a, b) => a + b.minutes, 0) / mids.length,
+            PI: mids.reduce((a, b) => a + (b.PI || 0), 0) / mids.length,
           });
         }
       });
   }, []);
-  loading && <div>Loading...</div>;
-  
-  const renderPlayerSection = (selectedPlayer, setSelectedPlayer, title) => (
+
+  if (loading) return <div>Loading...</div>;
+
+  const _renderPlayerSection = (selectedPlayer, setSelectedPlayer, title) => (
     <Stack spacing={{ xs: 2, sm: 3 }}>
       <Typography variant="h6" component="h2" gutterBottom>
         {title}
       </Typography>
-      
+
       {/* Player Selector */}
       <Paper elevation={1} sx={{ p: { xs: 1, sm: 2 } }}>
-        <PlayerSelector players={players} selectedPlayer={selectedPlayer} setSelectedPlayer={setSelectedPlayer} />
+        <PlayerSelector
+          players={players}
+          selectedPlayer={selectedPlayer}
+          setSelectedPlayer={setSelectedPlayer}
+        />
       </Paper>
 
       {/* Player Metrics */}
@@ -82,9 +95,9 @@ function App() {
       )}
     </Stack>
   );
-  
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <TopBar />
       <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, px: { xs: 1, sm: 2 }, flex: 1 }}>
         <Comparator players={players} avgStats={avgStats} />

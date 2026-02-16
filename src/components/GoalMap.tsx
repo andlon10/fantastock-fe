@@ -11,10 +11,10 @@ export default function GoalMap({ player }) {
 
     axios
       .get(`http://localhost:8000/api/player/${player.id}/shots`)
-      .then((res) => {
+      .then(res => {
         setShots(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }, [player]);
 
   if (!player || !shots.length) return null;
@@ -25,12 +25,13 @@ export default function GoalMap({ player }) {
   const goals = shots.filter(s => s.result === "Goal");
 
   if (!goals.length) return null;
-  console.log(goals);
+
+  // Flip Y coordinate: (1 - Y) to correct vertical orientation
   const goalPoints = goals.map(shot => ({
     x: parseFloat(shot.X) * 12,
-    y: parseFloat(shot.Y) * 8,
+    y: (1 - parseFloat(shot.Y)) * 8,
     xG: parseFloat(shot.xG) || 0,
-    minute: shot.minute || 0
+    minute: shot.minute || 0,
   }));
 
   return (
@@ -55,14 +56,14 @@ export default function GoalMap({ player }) {
               {
                 label: "Goals",
                 data: goalPoints,
-                pointRadius: (ctx) => {
+                pointRadius: ctx => {
                   const xg = ctx.raw?.xG ?? 0;
                   return 4 + xg * 12;
                 },
                 pointBackgroundColor: "gold",
                 pointBorderColor: "black",
                 pointBorderWidth: 1,
-              }
+              },
             ],
           }}
           options={{
@@ -70,10 +71,10 @@ export default function GoalMap({ player }) {
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  label: (ctx) =>
-                    `Minute: ${ctx.raw?.minute ?? 'N/A'}, xG: ${ctx.raw?.xG?.toFixed(2) ?? 'N/A'}`
-                }
-              }
+                  label: ctx =>
+                    `Minute: ${ctx.raw?.minute ?? "N/A"}, xG: ${ctx.raw?.xG?.toFixed(2) ?? "N/A"}`,
+                },
+              },
             },
             scales: {
               x: {

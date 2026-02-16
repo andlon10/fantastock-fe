@@ -7,33 +7,31 @@ import "./index.css";
 import {
   Chart as ChartJS,
   LinearScale,
+  CategoryScale,
+  BarElement,
   PointElement,
   Tooltip,
   Legend,
   RadialLinearScale,
   LineElement,
-  Filler
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
-  LinearScale,    // needed for Scatter / linear axes
-  PointElement,   // needed for Scatter points
+  LinearScale, // needed for Scatter / linear axes
+  CategoryScale, // needed for Bar charts
+  BarElement, // needed for Bar charts
+  PointElement, // needed for Scatter points
   Tooltip,
   Legend,
   RadialLinearScale, // for Radar charts
-  LineElement,       // for Radar chart lines
-  Filler              // for Radar chart fill
+  LineElement, // for Radar chart lines
+  Filler // for Radar chart fill
 );
 
 import { MatrixController, MatrixElement } from "chartjs-chart-matrix";
 
-ChartJS.register(
-  LinearScale,
-  Tooltip,
-  Legend,
-  MatrixController,
-  MatrixElement
-);
+ChartJS.register(LinearScale, Tooltip, Legend, MatrixController, MatrixElement);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

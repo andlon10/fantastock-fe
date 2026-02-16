@@ -8,31 +8,30 @@ function Footer() {
       sx={{
         py: 3,
         px: 2,
-        mt: 'auto',
-        borderTop: '1px solid',
-        borderColor: 'divider',
-        backgroundColor: '#ffffff',
+        mt: "auto",
+        borderTop: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "#ffffff",
       }}
     >
       <Container maxWidth="xl">
-        <Typography 
-          variant="body2" 
-          color="text.secondary" 
+        <Typography
+          variant="body2"
+          color="text.secondary"
           align="center"
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}
+          sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0.5 }}
         >
-          Made with{' '}
-          <FavoriteIcon sx={{ fontSize: '1rem', color: '#e91e63', verticalAlign: 'middle' }} />
-          {' '}by{' '}
-          <Link 
-            href="https://www.linkedin.com/in/andrealonghitano/" 
-            target="_blank" 
+          Made with{" "}
+          <FavoriteIcon sx={{ fontSize: "1rem", color: "#e91e63", verticalAlign: "middle" }} /> by{" "}
+          <Link
+            href="https://www.linkedin.com/in/andrealonghitano/"
+            target="_blank"
             rel="noopener noreferrer"
-            sx={{ 
-              color: 'primary.main',
-              textDecoration: 'none',
-              '&:hover': {
-                textDecoration: 'underline',
+            sx={{
+              color: "primary.main",
+              textDecoration: "none",
+              "&:hover": {
+                textDecoration: "underline",
               },
             }}
           >

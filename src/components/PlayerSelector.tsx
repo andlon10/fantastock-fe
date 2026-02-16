@@ -5,12 +5,12 @@ export default function PlayerSelector({ players, selectedPlayer, setSelectedPla
   return (
     <Autocomplete
       options={players}
-      getOptionLabel={(player) => `${player.name} (${player.team})`}
+      getOptionLabel={player => `${player.name} (${player.team})`}
       value={selectedPlayer}
       onChange={(event, newValue) => {
         setSelectedPlayer(newValue);
       }}
-      renderInput={(params) => (
+      renderInput={params => (
         <TextField
           {...params}
           variant="outlined"
