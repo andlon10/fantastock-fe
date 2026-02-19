@@ -1,8 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
-import axios from "axios";
-import Pitch from "./Pitch";
 import { Player, Shot } from "../_common/types";
+import Pitch from "./Pitch";
 
 export default function ShotHeatmap({ player }: { player: Player | null }) {
   const [shots, setShots] = useState<Shot[]>([]);
@@ -29,14 +29,12 @@ export default function ShotHeatmap({ player }: { player: Player | null }) {
     result: shot.result,
   }));
 
-  // Verify goal data consistency - if player has 0 goals, mark all as non-goals
   const hasGoals = player.goals > 0;
   const verifiedShotPoints = shotPoints.map(shot => ({
     ...shot,
     result: hasGoals ? shot.result : shot.result === "Goal" ? "Counted as Shot" : shot.result,
   }));
 
-  // Find max xG for color scaling
   const maxXG = Math.max(...verifiedShotPoints.map(s => s.xG), 0.1);
 
   if (!shots.length) return null;
@@ -51,12 +49,9 @@ export default function ShotHeatmap({ player }: { player: Player | null }) {
         margin: "0 auto",
       }}
     >
-      {/* Pitch */}
       <div style={{ position: "absolute", inset: 0 }}>
         <Pitch />
       </div>
-
-      {/* Heatmap Overlay */}
       <div style={{ position: "absolute", inset: 0 }}>
         <Chart
           type="scatter"

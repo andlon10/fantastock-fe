@@ -21,7 +21,7 @@ export default function FixturePerformanceChart({
 
   useEffect(() => {
     if (!player) return;
-
+    // fix this warning below
     setLoading(true);
     setError(null);
 
@@ -40,7 +40,6 @@ export default function FixturePerformanceChart({
       });
   }, [player, season]);
 
-  // Sort fixtures by number - memoized to prevent recalculation
   const sortedFixtures = useMemo(() => {
     if (!fixtureData || Object.keys(fixtureData).length === 0) return [];
     return Object.keys(fixtureData)
@@ -48,7 +47,6 @@ export default function FixturePerformanceChart({
       .sort((a, b) => a - b);
   }, [fixtureData]);
 
-  // Memoize chart data to prevent recreation on every render
   const chartData = useMemo(() => {
     if (sortedFixtures.length === 0) {
       return {
@@ -81,7 +79,6 @@ export default function FixturePerformanceChart({
     };
   }, [sortedFixtures, fixtureData]);
 
-  // Memoize chart options to prevent recreation on every render
   const options = useMemo(() => {
     return {
       responsive: true,

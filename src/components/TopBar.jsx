@@ -1,7 +1,7 @@
-import { AppBar, Toolbar, Typography, Container, Box, IconButton } from "@mui/material";
-import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import { AppBar, Box, Container, IconButton, Toolbar, Typography } from "@mui/material";
 
 function TopBar() {
   return (
@@ -41,7 +41,6 @@ function TopBar() {
             </Typography>
           </Box>
 
-          {/* Social Links with Slide Animation */}
           <Box sx={{ display: "flex", gap: 1 }}>
             <IconButton
               component="a"

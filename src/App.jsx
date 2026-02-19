@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
+import { Box, Container } from "@mui/material";
 import axios from "axios";
-import { Container, Box } from "@mui/material";
-import PlayerSelector from "./components/PlayerSelector";
-import PlayerMetrics from "./components/PlayerMetrics";
-import ScatterPlot from "./components/ScatterPlot";
-import RadarChart from "./components/RadarChart";
-import Heatmap from "./components/Heatmap";
+import { useEffect, useState } from "react";
 import { Comparator } from "./comparator/Comparator";
-import TopBar from "./components/TopBar";
 import Footer from "./components/Footer";
+import TopBar from "./components/TopBar";
 
 function App() {
   const [players, setPlayers] = useState([]);
@@ -46,55 +41,6 @@ function App() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-
-  const _renderPlayerSection = (selectedPlayer, setSelectedPlayer, title) => (
-    <Stack spacing={{ xs: 2, sm: 3 }}>
-      <Typography variant="h6" component="h2" gutterBottom>
-        {title}
-      </Typography>
-
-      {/* Player Selector */}
-      <Paper elevation={1} sx={{ p: { xs: 1, sm: 2 } }}>
-        <PlayerSelector
-          players={players}
-          selectedPlayer={selectedPlayer}
-          setSelectedPlayer={setSelectedPlayer}
-        />
-      </Paper>
-
-      {/* Player Metrics */}
-      {selectedPlayer && (
-        <Paper elevation={1} sx={{ p: { xs: 1, sm: 2 } }}>
-          <PlayerMetrics player={selectedPlayer} />
-        </Paper>
-      )}
-
-      {/* Scatter Plot */}
-      {selectedPlayer && (
-        <Paper elevation={1} sx={{ p: { xs: 1, sm: 2 } }}>
-          <Box sx={{ height: { xs: 250, sm: 350, md: 400 } }}>
-            <ScatterPlot players={players} selected={selectedPlayer} />
-          </Box>
-        </Paper>
-      )}
-
-      {/* Radar Chart */}
-      {selectedPlayer && (
-        <Paper elevation={1} sx={{ p: { xs: 1, sm: 2 } }}>
-          <Box sx={{ height: { xs: 250, sm: 350, md: 400 } }}>
-            <RadarChart player={selectedPlayer} avg={avgStats} />
-          </Box>
-        </Paper>
-      )}
-
-      {/* Heatmap */}
-      {selectedPlayer && (
-        <Paper elevation={1} sx={{ p: { xs: 1, sm: 2 } }}>
-          <Heatmap players={players} />
-        </Paper>
-      )}
-    </Stack>
-  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>

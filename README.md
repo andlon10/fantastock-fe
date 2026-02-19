@@ -16,20 +16,11 @@ A Fantacalcio (Italian fantasy football) player comparison and analysis tool bui
 - **Styling**: TailwindCSS 4 + DaisyUI + Material-UI
 - **Charts**: Chart.js with react-chartjs-2
 
-## Getting Started
+## How to run locally
 
-### TODO
-
-### TODO
-
-## Available Scripts
-
-- `npm run dev` - Start the development server with hot reload
-- `npm run build` - Build the production bundle
-- `npm run preview` - Preview the production build locally
-- `npm run lint` - Run ESLint for code quality checks
-
-## TODO
+- `npm i` - Install dependencies
+- `npm run dev` - Start the dev server (hot reloading)
+- Visit `http://localhost:5173` (assuming Node backend is running too)
 
 ## Contributing
 

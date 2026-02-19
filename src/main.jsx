@@ -3,9 +3,21 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-// Chart.js registration
 import {
+  BarElement,
+  CategoryScale,
   Chart as ChartJS,
+  Filler,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  RadialLinearScale,
+  Tooltip,
+} from "chart.js";
+
+// TODO check later for unused charts
+ChartJS.register(
   LinearScale,
   CategoryScale,
   BarElement,
@@ -14,19 +26,7 @@ import {
   Legend,
   RadialLinearScale,
   LineElement,
-  Filler,
-} from "chart.js";
-
-ChartJS.register(
-  LinearScale, // needed for Scatter / linear axes
-  CategoryScale, // needed for Bar charts
-  BarElement, // needed for Bar charts
-  PointElement, // needed for Scatter points
-  Tooltip,
-  Legend,
-  RadialLinearScale, // for Radar charts
-  LineElement, // for Radar chart lines
-  Filler // for Radar chart fill
+  Filler
 );
 
 import { MatrixController, MatrixElement } from "chartjs-chart-matrix";

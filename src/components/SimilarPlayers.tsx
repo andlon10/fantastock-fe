@@ -1,5 +1,6 @@
 import { Player } from "../_common/types";
 import { mapEnglishRoleToItalian } from "../comparator/utils";
+import PlayerAvatar from "./PlayerAvatar";
 
 export function SimilarPlayers({
   player,
@@ -39,10 +40,7 @@ export function SimilarPlayers({
           return (
             <li key={similarPlayer.id} className="list-row">
               <div>
-                <img
-                  className="size-10 rounded-box"
-                  src={`https://api.sofascore.app/api/v1/player/${similarPlayer.id}/image`}
-                />
+                <PlayerAvatar />
               </div>
               <div>
                 <div>{similarPlayer.name}</div>

@@ -1,6 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
-import axios from "axios";
 import Pitch from "./Pitch";
 
 export default function GoalMap({ player }) {
@@ -19,7 +19,6 @@ export default function GoalMap({ player }) {
 
   if (!player || !shots.length) return null;
 
-  // Only show goals if player actually has goals in their stats
   if (player.goals === 0) return null;
 
   const goals = shots.filter(s => s.result === "Goal");
