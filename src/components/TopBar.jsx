@@ -1,9 +1,24 @@
 import GitHubIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { AppBar, Box, Container, IconButton, Toolbar, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
+
+const LANGUAGES = [
+  { code: "it", flag: "IT", symbol: "🇮🇹", ariaLabelKey: "app.switchToItalian" },
+  { code: "en", flag: "EN", symbol: "🇬🇧", ariaLabelKey: "app.switchToEnglish" },
+];
 
 function TopBar() {
+  const { t, i18n } = useTranslation();
+
+  const activeLanguage = i18n.resolvedLanguage || i18n.language;
+
+  const handleLanguageChange = language => {
+    if (language !== activeLanguage) {
+      i18n.changeLanguage(language);
+    }
+  };
+
   return (
     <AppBar
       position="sticky"
@@ -37,31 +52,79 @@ function TopBar() {
                 },
               }}
             >
-              Fantastock
+              {t("app.name")}
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                px: 1,
+                py: 0.25,
+                borderRadius: 1,
+                border: "1px solid",
+                borderColor: "warning.main",
+                color: "warning.dark",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                lineHeight: 1.4,
+              }}
+            >
+              {t("app.version")}
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton
-              component="a"
-              href="https://www.linkedin.com/in/andrealonghitano/"
-              target="_blank"
-              rel="noopener noreferrer"
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
               sx={{
-                color: "text.secondary",
-                transition: "all 0.3s ease-in-out",
-                transform: "translateX(0)",
-                "&:hover": {
-                  color: "#0077b5",
-                  transform: "translateX(-4px)",
-                  backgroundColor: "rgba(0, 119, 181, 0.08)",
-                },
+                display: "flex",
+                alignItems: "center",
+                gap: 0.75,
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 999,
+                p: 0.5,
+                backgroundColor: "rgba(15, 23, 42, 0.03)",
               }}
-              aria-label="LinkedIn"
             >
-              <LinkedInIcon />
-            </IconButton>
+              {LANGUAGES.map(language => {
+                const isActive = activeLanguage === language.code;
 
+                return (
+                  <IconButton
+                    key={language.code}
+                    onClick={() => handleLanguageChange(language.code)}
+                    size="small"
+                    aria-label={t(language.ariaLabelKey)}
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 999,
+                      border: "1px solid",
+                      borderColor: isActive ? "primary.main" : "transparent",
+                      backgroundColor: isActive ? "primary.main" : "transparent",
+                      color: isActive ? "primary.contrastText" : "text.primary",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": {
+                        backgroundColor: isActive ? "primary.dark" : "rgba(15, 23, 42, 0.08)",
+                      },
+                    }}
+                  >
+                    <Box
+                      component="span"
+                      sx={{ display: "flex", alignItems: "center", gap: 0.35, lineHeight: 1 }}
+                    >
+                      <Box component="span" sx={{ fontSize: "1rem" }}>
+                        {language.symbol}
+                      </Box>
+                      <Box component="span" sx={{ fontSize: "0.65rem", letterSpacing: "0.04em" }}>
+                        {language.flag}
+                      </Box>
+                    </Box>
+                  </IconButton>
+                );
+              })}
+            </Box>
             <IconButton
               component="a"
               href="https://github.com/andlon10"
@@ -77,7 +140,7 @@ function TopBar() {
                   backgroundColor: "rgba(0, 0, 0, 0.08)",
                 },
               }}
-              aria-label="GitHub"
+              aria-label={t("app.githubAriaLabel")}
             >
               <GitHubIcon />
             </IconButton>

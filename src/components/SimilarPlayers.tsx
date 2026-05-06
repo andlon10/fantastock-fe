@@ -1,5 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { Player } from "../_common/types";
-import { mapEnglishRoleToItalian } from "../comparator/utils";
+import { mapEnglishRoleToItalian } from "../modules/comparator/utils";
 import PlayerAvatar from "./PlayerAvatar";
 
 export function SimilarPlayers({
@@ -9,6 +10,8 @@ export function SimilarPlayers({
   player: Player;
   similarPlayers: Player[] | null;
 }) {
+  const { t } = useTranslation();
+
   const calculatePerformanceDifference = (
     selectedPlayer: Player,
     listedPlayer: Player
@@ -19,7 +22,7 @@ export function SimilarPlayers({
   };
 
   const formatPerformanceDifference = (difference: number | null): string => {
-    if (difference === null) return "N/A";
+    if (difference === null) return t("common.na");
     const sign = difference > 0 ? "+" : "";
     return `${sign}${difference.toFixed(1)}%`;
   };
@@ -31,7 +34,7 @@ export function SimilarPlayers({
   return (
     <ul className="list rounded-box shadow-md">
       <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
-        Players with similar performance indicators
+        {t("charts.similarPlayersListTitle")}
       </li>
       {similarPlayers && similarPlayers.length > 0 ? (
         similarPlayers.map(similarPlayer => {
@@ -59,7 +62,7 @@ export function SimilarPlayers({
           );
         })
       ) : (
-        <li className="p-4 text-sm opacity-60">No similar players found.</li>
+        <li className="p-4 text-sm opacity-60">{t("charts.emptySimilarPlayers")}</li>
       )}
     </ul>
   );

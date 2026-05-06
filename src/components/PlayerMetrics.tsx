@@ -1,7 +1,9 @@
-import React from "react";
 import { Card, CardContent, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function PlayerMetrics({ player }) {
+  const { t } = useTranslation();
+
   if (!player) return null; // <-- add this check
 
   return (
@@ -10,16 +12,26 @@ export default function PlayerMetrics({ player }) {
         <Typography variant="h6">
           {player.name} ({player.team})
         </Typography>
-        <Typography>PI: {player.PI}</Typography>
-        <Typography>FOI: {player.FOI}</Typography>
-        <Typography>Projection Gap: {player.ProjectionGap}</Typography>
         <Typography>
-          Goals: {player.goals}, Assists: {player.assists}
+          {t("comparator.metricDefinitions.PI.label")}: {player.PI}
         </Typography>
         <Typography>
-          xG: {player.xG.toFixed(2)}, xA: {player.xA.toFixed(2)}
+          {t("comparator.metricDefinitions.FOI.label")}: {player.FOI}
         </Typography>
-        <Typography>Minutes: {player.minutes}</Typography>
+        <Typography>
+          {t("playerMetricsCard.projectionGap")}: {player.ProjectionGap}
+        </Typography>
+        <Typography>
+          {t("playerMetricsCard.goals")}: {player.goals}, {t("playerMetricsCard.assists")}:{" "}
+          {player.assists}
+        </Typography>
+        <Typography>
+          {t("comparator.metricDefinitions.xG.label")}: {player.xG.toFixed(2)},{" "}
+          {t("comparator.metricDefinitions.xA.label")}: {player.xA.toFixed(2)}
+        </Typography>
+        <Typography>
+          {t("playerMetricsCard.minutes")}: {player.minutes}
+        </Typography>
       </CardContent>
     </Card>
   );

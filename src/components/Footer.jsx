@@ -1,7 +1,10 @@
-import { Box, Container, Typography, Link } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Box, Container, Link, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <Box
       component="footer"
@@ -21,8 +24,9 @@ function Footer() {
           align="center"
           sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0.5 }}
         >
-          Made with{" "}
-          <FavoriteIcon sx={{ fontSize: "1rem", color: "#e91e63", verticalAlign: "middle" }} /> by{" "}
+          {t("app.footerMadeWith")}
+          <FavoriteIcon sx={{ fontSize: "1rem", color: "#e91e63", verticalAlign: "middle" }} />
+          {t("app.footerBy")}
           <Link
             href="https://www.linkedin.com/in/andrealonghitano/"
             target="_blank"

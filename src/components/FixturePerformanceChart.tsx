@@ -1,7 +1,8 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
-import axios from "axios";
+import { TooltipItem } from "chart.js";
 import { useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 
 interface FixturePerformanceChartProps {
   player: {
@@ -15,30 +16,36 @@ export default function FixturePerformanceChart({
   player,
   season = "2025",
 }: FixturePerformanceChartProps) {
+  const { t } = useTranslation();
   const [fixtureData, setFixtureData] = useState<Record<number, number>>({});
-  const [loading, setLoading] = useState(true);
+  const [resolvedRequestKey, setResolvedRequestKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const requestKey = `${player?.id ?? "none"}-${season}`;
+  const loading = Boolean(player) && resolvedRequestKey !== requestKey && error === null;
 
   useEffect(() => {
     if (!player) return;
-    // fix this warning below
-    setLoading(true);
-    setError(null);
 
-    axios
-      .get(`http://localhost:8000/api/player/${player.id}/fixtures`, {
-        params: { season },
-      })
+    const url = new URL(`http://localhost:8000/api/player/${player.id}/fixtures`);
+    url.searchParams.set("season", season);
+
+    fetch(url.toString())
       .then(res => {
-        setFixtureData(res.data);
-        setLoading(false);
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json();
+      })
+      .then(data => {
+        setFixtureData(data);
+        setError(null);
+        setResolvedRequestKey(requestKey);
       })
       .catch(err => {
         console.error("Error fetching fixture performance:", err);
-        setError("Failed to load fixture performance data");
-        setLoading(false);
+        setFixtureData({});
+        setError(t("charts.fixturePerformance.error"));
+        setResolvedRequestKey(requestKey);
       });
-  }, [player, season]);
+  }, [player, requestKey, season, t]);
 
   const sortedFixtures = useMemo(() => {
     if (!fixtureData || Object.keys(fixtureData).length === 0) return [];
@@ -56,10 +63,12 @@ export default function FixturePerformanceChart({
     }
 
     return {
-      labels: sortedFixtures.map(fixture => `G ${fixture}`),
+      labels: sortedFixtures.map(
+        fixture => `${t("charts.fixturePerformance.matchday")} ${fixture}`
+      ),
       datasets: [
         {
-          label: "Bonus",
+          label: t("charts.labels.bonus"),
           data: sortedFixtures.map(fixture => fixtureData[fixture]),
           backgroundColor: sortedFixtures.map(fixture => {
             const points = fixtureData[fixture];
@@ -77,7 +86,7 @@ export default function FixturePerformanceChart({
         },
       ],
     };
-  }, [sortedFixtures, fixtureData]);
+  }, [fixtureData, sortedFixtures, t]);
 
   const options = useMemo(() => {
     return {
@@ -89,7 +98,10 @@ export default function FixturePerformanceChart({
         },
         title: {
           display: true,
-          text: `${player?.name || "Giocatore"} - Performance stagionale (Stagione ${season})`,
+          text: t("charts.fixturePerformance.title", {
+            player: player?.name || t("charts.fixturePerformance.defaultPlayer"),
+            season,
+          }),
           font: {
             size: 16,
             weight: "bold" as const,
@@ -97,15 +109,15 @@ export default function FixturePerformanceChart({
         },
         tooltip: {
           callbacks: {
-            label: (context: any) => {
+            label: (context: TooltipItem<"bar">) => {
               const points = context.parsed.y;
 
-              if (points === null) return "Non ha giocato";
-              if (points === 0) return "Nessun bonus";
+              if (points === null) return t("charts.fixturePerformance.notPlayed");
+              if (points === 0) return t("charts.fixturePerformance.noBonus");
 
               const goals = Math.floor(points / 3);
               const assists = points % 3;
-              const breakdown = [];
+              const breakdown: string[] = [];
 
               if (goals > 0) breakdown.push(`${goals}G`);
               if (assists > 0) breakdown.push(`${assists}A`);
@@ -119,7 +131,7 @@ export default function FixturePerformanceChart({
         x: {
           title: {
             display: true,
-            text: "Giornata",
+            text: t("charts.fixturePerformance.matchday"),
           },
           ticks: {
             autoSkip: false,
@@ -133,19 +145,19 @@ export default function FixturePerformanceChart({
           max: 12,
           title: {
             display: true,
-            text: "Punti",
+            text: t("charts.fixturePerformance.points"),
           },
           ticks: {
             stepSize: 1,
-            callback: function (value: any) {
-              if (value === null) return "N/D";
+            callback: function (value: string | number) {
+              if (value === null) return t("charts.fixturePerformance.unavailable");
               return value;
             },
           },
         },
       },
     };
-  }, [player?.name, season]);
+  }, [player?.name, season, t]);
 
   if (loading) {
     return (
@@ -166,7 +178,7 @@ export default function FixturePerformanceChart({
   if (!fixtureData || Object.keys(fixtureData).length === 0) {
     return (
       <Box p={2}>
-        <Typography color="text.secondary">Nessun dato disponibile</Typography>
+        <Typography color="text.secondary">{t("common.noDataAvailable")}</Typography>
       </Box>
     );
   }

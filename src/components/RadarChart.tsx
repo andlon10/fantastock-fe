@@ -1,6 +1,9 @@
 import { Radar } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 
 export default function RadarChart({ player, avg }) {
+  const { t } = useTranslation();
+
   if (!player) return null;
 
   const calculate90Metrics = p => {
@@ -22,7 +25,14 @@ export default function RadarChart({ player, avg }) {
   const avgMetrics = calculate90Metrics(avg);
 
   const data = {
-    labels: ["Goals/90", "Assists/90", "G+A/90", "xG/90", "xA/90", "PI"],
+    labels: [
+      t("charts.labels.goalsPer90"),
+      t("charts.labels.assistsPer90"),
+      t("charts.labels.contributionsPer90"),
+      t("charts.labels.xGPer90"),
+      t("charts.labels.xAPer90"),
+      t("charts.labels.pi"),
+    ],
     datasets: [
       {
         label: player.name,
@@ -39,7 +49,7 @@ export default function RadarChart({ player, avg }) {
         borderWidth: 2,
       },
       {
-        label: "Position Avg",
+        label: t("charts.labels.positionAverage"),
         data: [
           parseFloat(avgMetrics.goalsPer90),
           parseFloat(avgMetrics.assistsPer90),
@@ -76,7 +86,7 @@ export default function RadarChart({ player, avg }) {
               label += ": ";
             }
             // Scale PI back up for display
-            if (context.label === "PI") {
+            if (context.label === t("charts.labels.pi")) {
               label += (context.parsed.r * 10).toFixed(1);
             } else {
               label += context.parsed.r.toFixed(2);

@@ -1,19 +1,22 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
+import { Shot } from "../_common/types";
 import Pitch from "./Pitch";
 
 export default function GoalMap({ player }) {
-  const [shots, setShots] = useState([]);
+  const { t } = useTranslation();
+  const [shots, setShots] = useState<Shot[]>([]);
 
   useEffect(() => {
     if (!player) return;
 
-    axios
-      .get(`http://localhost:8000/api/player/${player.id}/shots`)
+    fetch(`http://localhost:8000/api/player/${player.id}/shots`)
       .then(res => {
-        setShots(res.data);
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json();
       })
+      .then(data => setShots(data))
       .catch(err => console.error(err));
   }, [player]);
 
@@ -32,6 +35,7 @@ export default function GoalMap({ player }) {
     xG: parseFloat(shot.xG) || 0,
     minute: shot.minute || 0,
   }));
+  type GoalPoint = (typeof goalPoints)[number];
 
   return (
     <div
@@ -53,10 +57,11 @@ export default function GoalMap({ player }) {
           data={{
             datasets: [
               {
-                label: "Goals",
+                label: t("charts.labels.goals"),
                 data: goalPoints,
                 pointRadius: ctx => {
-                  const xg = ctx.raw?.xG ?? 0;
+                  const point = ctx.raw as GoalPoint | undefined;
+                  const xg = point?.xG ?? 0;
                   return 4 + xg * 12;
                 },
                 pointBackgroundColor: "gold",
@@ -70,8 +75,10 @@ export default function GoalMap({ player }) {
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  label: ctx =>
-                    `Minute: ${ctx.raw?.minute ?? "N/A"}, xG: ${ctx.raw?.xG?.toFixed(2) ?? "N/A"}`,
+                  label: ctx => {
+                    const point = ctx.raw as GoalPoint | undefined;
+                    return `${t("charts.tooltips.minute")}: ${point?.minute ?? t("common.na")}, xG: ${point?.xG?.toFixed(2) ?? t("common.na")}`;
+                  },
                 },
               },
             },

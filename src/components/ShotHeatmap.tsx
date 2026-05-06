@@ -1,20 +1,22 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 import { Player, Shot } from "../_common/types";
 import Pitch from "./Pitch";
 
 export default function ShotHeatmap({ player }: { player: Player | null }) {
+  const { t } = useTranslation();
   const [shots, setShots] = useState<Shot[]>([]);
 
   useEffect(() => {
     if (!player) return;
 
-    axios
-      .get(`http://localhost:8000/api/player/${player.id}/shots?season=2025`)
+    fetch(`http://localhost:8000/api/player/${player.id}/shots?season=2025`)
       .then(res => {
-        setShots(res.data);
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json();
       })
+      .then(data => setShots(data))
       .catch(err => console.error(err));
   }, [player]);
 
@@ -32,8 +34,13 @@ export default function ShotHeatmap({ player }: { player: Player | null }) {
   const hasGoals = player.goals > 0;
   const verifiedShotPoints = shotPoints.map(shot => ({
     ...shot,
-    result: hasGoals ? shot.result : shot.result === "Goal" ? "Counted as Shot" : shot.result,
+    result: hasGoals
+      ? shot.result
+      : shot.result === "Goal"
+        ? t("charts.countedAsShot")
+        : shot.result,
   }));
+  type ShotPoint = (typeof verifiedShotPoints)[number];
 
   const maxXG = Math.max(...verifiedShotPoints.map(s => s.xG), 0.1);
 
@@ -58,16 +65,16 @@ export default function ShotHeatmap({ player }: { player: Player | null }) {
           data={{
             datasets: [
               {
-                label: "Shots",
+                label: t("charts.labels.shots"),
                 data: verifiedShotPoints,
                 pointRadius: ctx => {
-                  const point = ctx.dataset.data?.[ctx.dataIndex];
+                  const point = ctx.dataset.data?.[ctx.dataIndex] as ShotPoint | undefined;
                   if (!point) return 3;
                   // Radius based on xG: 3-10 pixels
                   return 3 + (point.xG / maxXG) * 7;
                 },
                 pointBackgroundColor: ctx => {
-                  const point = ctx.dataset.data?.[ctx.dataIndex];
+                  const point = ctx.dataset.data?.[ctx.dataIndex] as ShotPoint | undefined;
                   if (!point) return "rgba(255, 69, 0, 0.3)";
                   // Color intensity based on xG
                   const intensity = Math.pow(point.xG / maxXG, 0.5);
@@ -85,9 +92,12 @@ export default function ShotHeatmap({ player }: { player: Player | null }) {
                 enabled: true,
                 callbacks: {
                   label: ctx => {
-                    const point = ctx.dataset.data?.[ctx.dataIndex];
+                    const point = ctx.dataset.data?.[ctx.dataIndex] as ShotPoint | undefined;
                     if (!point) return "";
-                    return [`xG: ${point.xG.toFixed(3)}`, `Result: ${point.result || "Unknown"}`];
+                    return [
+                      `xG: ${point.xG.toFixed(3)}`,
+                      `${t("charts.tooltips.result")}: ${point.result || t("common.unknown")}`,
+                    ];
                   },
                 },
               },

@@ -1,7 +1,9 @@
 import { Typography } from "@mui/material";
-import FixturePerformanceChart from "../../components/FixturePerformanceChart";
-import { Player } from "../../_common/types";
+import { useTranslation } from "react-i18next";
+import { Player } from "../../../_common/types";
+import FixturePerformanceChart from "../../../components/FixturePerformanceChart";
 
+// Currently unused, better BE data required
 export function BonusChartContainer({
   player1,
   player2,
@@ -9,13 +11,15 @@ export function BonusChartContainer({
   player1: Player | null;
   player2: Player | null;
 }) {
+  const { t } = useTranslation();
+
   return (
     <>
       <Typography variant="h4" component="h1" gutterBottom>
-        Bonus Point Performance
+        {t("comparator.bonusPerformanceTitle")}
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Compare the bonus point performance of each player across the season.
+        {t("comparator.bonusPerformanceDescription")}
       </Typography>
       <div className="grid md:grid-cols-2 gap-3">
         <div

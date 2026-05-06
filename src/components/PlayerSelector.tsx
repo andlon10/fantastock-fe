@@ -1,7 +1,9 @@
-import React from "react";
 import { Autocomplete, TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function PlayerSelector({ players, selectedPlayer, setSelectedPlayer }) {
+  const { t } = useTranslation();
+
   return (
     <Autocomplete
       options={players}
@@ -14,8 +16,8 @@ export default function PlayerSelector({ players, selectedPlayer, setSelectedPla
         <TextField
           {...params}
           variant="outlined"
-          label="Search Player"
-          placeholder="Type to search..."
+          label={t("common.searchPlayerLabel")}
+          placeholder={t("common.typeToSearch")}
         />
       )}
       isOptionEqualToValue={(option, value) => option.id === value.id}

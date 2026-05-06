@@ -1,8 +1,18 @@
 import { Radar as RadarChartJS } from "react-chartjs-2";
-import { Player } from "../_common/types";
+import { useTranslation } from "react-i18next";
+import { Player } from "../../../_common/types";
 
 export function Radar({ player1, player2 }: { player1: Player | null; player2: Player | null }) {
-  if (!player1 || !player2) return null;
+  const { t } = useTranslation();
+
+  if (!player1 || !player2) {
+    return (
+      <div>
+        <h2 className="text-2xl font-bold mb-2">{t("comparator.radarTitle")}</h2>
+        <p className="text-sm text-gray-600 mb-4">{t("comparator.radarDescription")}</p>
+      </div>
+    );
+  }
 
   // Calculate per-90 metrics for better comparison across players
   const calculate90Metrics = (p: Player) => {
@@ -37,7 +47,14 @@ export function Radar({ player1, player2 }: { player1: Player | null; player2: P
   };
 
   const data = {
-    labels: ["Goals/90", "Assists/90", "G+A/90", "xG/90", "xA/90", "PI (scaled)"],
+    labels: [
+      t("charts.labels.goalsPer90"),
+      t("charts.labels.assistsPer90"),
+      t("charts.labels.contributionsPer90"),
+      t("charts.labels.xGPer90"),
+      t("charts.labels.xAPer90"),
+      t("charts.labels.piScaled"),
+    ],
     datasets: [
       {
         label: player1.name,
@@ -121,9 +138,15 @@ export function Radar({ player1, player2 }: { player1: Player | null; player2: P
             const originalValue = rawData?.[metricName] ?? 0;
 
             if (metricName === "PI") {
-              label += `${originalValue} (scaled: ${(context.parsed?.r ?? 0).toFixed(1)}/10)`;
+              label += t("charts.tooltips.scaledValue", {
+                value: originalValue,
+                scaled: (context.parsed?.r ?? 0).toFixed(1),
+              });
             } else {
-              label += `${originalValue} (scaled: ${(context.parsed?.r ?? 0).toFixed(1)}/10)`;
+              label += t("charts.tooltips.scaledValue", {
+                value: originalValue,
+                scaled: (context.parsed?.r ?? 0).toFixed(1),
+              });
             }
 
             return label;
@@ -134,13 +157,19 @@ export function Radar({ player1, player2 }: { player1: Player | null; player2: P
   };
 
   return (
-    <div style={{ height: "400px" }}>
-      <RadarChartJS
-        key={`radar-${player1?.id || "none"}-${player2?.id || "none"}`}
-        data={data}
-        options={{ ...options, maintainAspectRatio: false }}
-        redraw={true}
-      />
-    </div>
+    <>
+      <div>
+        <h2 className="text-2xl font-bold mb-2">{t("comparator.radarTitle")}</h2>
+        <p className="text-sm text-gray-600 mb-4">{t("comparator.radarDescription")}</p>
+      </div>
+      <div style={{ height: "400px" }}>
+        <RadarChartJS
+          key={`radar-${player1?.id || "none"}-${player2?.id || "none"}`}
+          data={data}
+          options={{ ...options, maintainAspectRatio: false }}
+          redraw={true}
+        />
+      </div>
+    </>
   );
 }
