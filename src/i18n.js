@@ -8,6 +8,7 @@ const initialLanguage =
     ? window.localStorage.getItem(LANGUAGE_STORAGE_KEY) || defaultLanguage
     : defaultLanguage;
 
+// TODO move to a json file
 const resources = {
   en: {
     translation: {
@@ -45,6 +46,7 @@ const resources = {
           "Fantastock brings player comparison analytics and live auction planning into one place, so every bid and every pick is backed by data.",
         openComparator: "Open Comparator",
         openAuctionPlanner: "Go To Auction Planner",
+        openOfferComparator: "Compare Trade Offers",
         comparatorChip: "Player Comparator",
         comparatorTitle: "Compare two players from every angle",
         comparatorDescription:
@@ -61,6 +63,14 @@ const resources = {
         positionBreakdown: "Position Breakdown",
         savedSelection: "Saved Selection",
         planAuction: "Plan your auction",
+        offerComparatorChip: "Offer Comparator",
+        offerComparatorTitle: "Evaluate multi-player trade offers",
+        offerComparatorDescription:
+          "Compare bundles of up to five players per side with a single performance score and detailed stat breakdown.",
+        upToFiveVsFive: "Up to 5 vs 5",
+        performanceScore: "Performance score",
+        tradeVerdict: "Trade verdict",
+        compareOffers: "Compare offers",
       },
       auction: {
         title: "Auction",
@@ -163,6 +173,42 @@ const resources = {
           },
         },
       },
+      tradeComparator: {
+        title: "Offer Comparator",
+        description:
+          "Select two sets of players and estimate which side projects to deliver stronger fantasy performance.",
+        offerA: "Offer A",
+        offerB: "Offer B",
+        addSlot: "Add player",
+        playerSlot: "Player {{index}}",
+        selectPlayersHint: "Select at least one player in either side to calculate the comparison.",
+        verdictTitle: "Offer Verdict",
+        verdictDescription:
+          "The score is a weighted heuristic based on PI, total points, attacking output, and form indicators.",
+        tie: "Both offers are very close",
+        favorsA: "Offer A projects better",
+        favorsB: "Offer B projects better",
+        scoreOfferA: "Offer A score",
+        scoreOfferB: "Offer B score",
+        confidence: "Confidence",
+        breakdownTitle: "Stat Breakdown",
+        breakdownDescription: "Side-by-side totals and rates used for the final score.",
+        metric: "Metric",
+        playersSelected: "Players selected",
+        totalPI: "Total PI",
+        avgPI: "Average PI",
+        totalPoints: "Total points",
+        goalContributions: "Goal contributions",
+        contributionsPer90: "G+A per 90",
+        xContributionsPer90: "xG+xA per 90",
+        avgFOI: "Average FOI",
+        tooltips: {
+          scoreOfferA: "Weighted projected performance score for the players selected in Offer A.",
+          scoreOfferB: "Weighted projected performance score for the players selected in Offer B.",
+          confidence:
+            "Percent gap between scores: |A-B| / higher score. Higher means a clearer edge.",
+        },
+      },
       charts: {
         labels: {
           goals: "Goals",
@@ -246,6 +292,7 @@ const resources = {
           "Fantastock offre analisi delle performance dei giocatori e pianificazione aste in tempo reale.",
         openComparator: "Apri comparatore",
         openAuctionPlanner: "Vai allo strumento per l'asta",
+        openOfferComparator: "Confronta offerte",
         comparatorChip: "Comparatore giocatori",
         comparatorTitle: "Confronta due giocatori da molteplici prospettive",
         comparatorDescription:
@@ -262,6 +309,14 @@ const resources = {
         positionBreakdown: "Ripartizione per ruolo",
         savedSelection: "Selezione salvata",
         planAuction: "Pianifica l'asta",
+        offerComparatorChip: "Comparatore offerte",
+        offerComparatorTitle: "Valuta scambi con piu giocatori",
+        offerComparatorDescription:
+          "Confronta pacchetti fino a cinque giocatori per lato con un punteggio unico e una vista dettagliata delle metriche.",
+        upToFiveVsFive: "Fino a 5 vs 5",
+        performanceScore: "Punteggio performance",
+        tradeVerdict: "Verdetto scambio",
+        compareOffers: "Confronta offerte",
       },
       auction: {
         title: "Asta",
@@ -364,6 +419,45 @@ const resources = {
             label: "Minuti",
             description: "Minuti totali giocati.",
           },
+        },
+      },
+      tradeComparator: {
+        title: "Comparatore offerte",
+        description:
+          "Seleziona due set di giocatori e stima quale lato puo offrire performance fantacalcio migliori.",
+        offerA: "Offerta A",
+        offerB: "Offerta B",
+        addSlot: "Aggiungi giocatore",
+        playerSlot: "Giocatore {{index}}",
+        selectPlayersHint:
+          "Seleziona almeno un giocatore in uno dei due lati per calcolare il confronto.",
+        verdictTitle: "Verdetto offerta",
+        verdictDescription:
+          "Il punteggio e una stima pesata basata su PI, punti totali, output offensivo e indicatori di forma.",
+        tie: "Le due offerte sono molto vicine",
+        favorsA: "L'offerta A e migliore",
+        favorsB: "L'offerta B e migliore",
+        scoreOfferA: "Punteggio offerta A",
+        scoreOfferB: "Punteggio offerta B",
+        confidence: "Confidenza",
+        breakdownTitle: "Dettaglio metriche",
+        breakdownDescription: "Totali e medie affiancate utilizzate per il punteggio finale.",
+        metric: "Metrica",
+        playersSelected: "Giocatori selezionati",
+        totalPI: "PI totale",
+        avgPI: "PI medio",
+        totalPoints: "Punti totali",
+        goalContributions: "Contributi gol",
+        contributionsPer90: "G+A per 90",
+        xContributionsPer90: "xG+xA per 90",
+        avgFOI: "FOI medio",
+        tooltips: {
+          scoreOfferA:
+            "Punteggio di performance stimata pesata per i giocatori selezionati nell'offerta A.",
+          scoreOfferB:
+            "Punteggio di performance stimata pesata per i giocatori selezionati nell'offerta B.",
+          confidence:
+            "Scarto percentuale: |A-B| / punteggio piu alto. Piu alto = vantaggio piu netto.",
         },
       },
       charts: {

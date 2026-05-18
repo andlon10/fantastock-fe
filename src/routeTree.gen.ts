@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OfferComparatorIndexRouteImport } from './routes/offer-comparator/index'
 import { Route as ComparatorIndexRouteImport } from './routes/comparator/index'
 import { Route as AuctionIndexRouteImport } from './routes/auction/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfferComparatorIndexRoute = OfferComparatorIndexRouteImport.update({
+  id: '/offer-comparator/',
+  path: '/offer-comparator/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComparatorIndexRoute = ComparatorIndexRouteImport.update({
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auction/': typeof AuctionIndexRoute
   '/comparator/': typeof ComparatorIndexRoute
+  '/offer-comparator/': typeof OfferComparatorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auction': typeof AuctionIndexRoute
   '/comparator': typeof ComparatorIndexRoute
+  '/offer-comparator': typeof OfferComparatorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auction/': typeof AuctionIndexRoute
   '/comparator/': typeof ComparatorIndexRoute
+  '/offer-comparator/': typeof OfferComparatorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auction/' | '/comparator/'
+  fullPaths: '/' | '/auction/' | '/comparator/' | '/offer-comparator/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auction' | '/comparator'
-  id: '__root__' | '/' | '/auction/' | '/comparator/'
+  to: '/' | '/auction' | '/comparator' | '/offer-comparator'
+  id: '__root__' | '/' | '/auction/' | '/comparator/' | '/offer-comparator/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuctionIndexRoute: typeof AuctionIndexRoute
   ComparatorIndexRoute: typeof ComparatorIndexRoute
+  OfferComparatorIndexRoute: typeof OfferComparatorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offer-comparator/': {
+      id: '/offer-comparator/'
+      path: '/offer-comparator'
+      fullPath: '/offer-comparator/'
+      preLoaderRoute: typeof OfferComparatorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/comparator/': {
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuctionIndexRoute: AuctionIndexRoute,
   ComparatorIndexRoute: ComparatorIndexRoute,
+  OfferComparatorIndexRoute: OfferComparatorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
