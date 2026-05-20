@@ -8,7 +8,7 @@ import { useBonusOverTimeData } from "./hooks/useBonusOverTimeData";
 import { usePlayersData } from "./hooks/usePlayersData";
 import { useSimilarPlayer } from "./hooks/useSimilarPlayer";
 import { PlayerMetricsComparisonTable } from "./player-metrics/PlayerMetricsComparisonTable";
-import { Radar } from "./radar/Radar";
+import { RadarComparison } from "./radar/Radar";
 import { ShotHeatmapContainer } from "./shot-heatmap/ShotHeatmapContainer";
 import { SimilarPlayersContainer } from "./similar-players/SimilarPlayerContainer";
 
@@ -90,7 +90,7 @@ export function Comparator() {
 
           <div className="w-full mb-6">
             <Paper elevation={1} className="p-4">
-              <Radar player1={selectedPlayer1} player2={selectedPlayer2} />
+              <RadarComparison player1={selectedPlayer1} player2={selectedPlayer2} />
             </Paper>
           </div>
 

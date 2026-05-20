@@ -28,6 +28,8 @@ const resources = {
         na: "N/A",
         unknown: "Unknown",
         searchPlayerLabel: "Search Player",
+        season: "Season",
+        selectSeason: "Select season",
         typeToSearch: "Type to search...",
         selectPlayer: "Select player",
         addPlayerSlot: "Add player slot",
@@ -71,6 +73,14 @@ const resources = {
         performanceScore: "Performance score",
         tradeVerdict: "Trade verdict",
         compareOffers: "Compare offers",
+        playerDetailsChip: "Player Details",
+        playerDetailsTitle: "Deep dive into one player",
+        playerDetailsDescription:
+          "View one player like a SofaScore-style profile: season trend, bonus timeline, shot map, and similar players.",
+        playerOverview: "Player overview",
+        seasonTrend: "Season trend",
+        bonusBreakdown: "Bonus breakdown",
+        viewPlayer: "View details",
       },
       auction: {
         title: "Auction",
@@ -254,6 +264,29 @@ const resources = {
         assists: "Assists",
         minutes: "Minutes",
       },
+      playerDetails: {
+        title: "Player Details",
+        subtitle:
+          "Select a player to inspect key metrics, match-by-match output, bonus breakdown, shot locations, and similar profiles.",
+        searchTitle: "Select player",
+        selectPrompt: "Select a player to open the detailed view.",
+        overviewTag: "Overview",
+        trendTag: "Trend",
+        heatmapTag: "Shot map",
+        piRank: "PI Rank {{rank}}/{{total}} (Top {{percentile}}%)",
+        fixtureTrendTitle: "Season performance by matchday",
+        fixtureTrendDescription:
+          "Track fantasy output across the season and spot hot/cold stretches.",
+        bonusTrendTitle: "Bonus events over time",
+        bonusTrendDescription:
+          "Stacked event breakdown of positive and negative bonus actions per round.",
+        shotMapTitle: "Shot map",
+        shotMapDescription: "See where the player takes shots and the chance quality of each shot.",
+        similarPlayersTitle: "Most similar players",
+        similarPlayersDescription:
+          "Closest profiles based on the available similarity endpoint and PI comparison.",
+        playerNotFound: "No player found with ID {{playerId}}. Select another player from search.",
+      },
     },
   },
   it: {
@@ -274,6 +307,8 @@ const resources = {
         na: "N/D",
         unknown: "Sconosciuto",
         searchPlayerLabel: "Cerca giocatore",
+        season: "Stagione",
+        selectSeason: "Seleziona stagione",
         typeToSearch: "Digita per cercare...",
         selectPlayer: "Seleziona un giocatore",
         addPlayerSlot: "Aggiungi slot giocatore",
@@ -317,6 +352,14 @@ const resources = {
         performanceScore: "Punteggio performance",
         tradeVerdict: "Verdetto scambio",
         compareOffers: "Confronta offerte",
+        playerDetailsChip: "Dettaglio giocatore",
+        playerDetailsTitle: "Analizza a fondo un singolo giocatore",
+        playerDetailsDescription:
+          "Visualizza un profilo stile SofaScore: trend stagionale, timeline bonus, mappa tiri e giocatori simili.",
+        playerOverview: "Panoramica",
+        seasonTrend: "Trend stagione",
+        bonusBreakdown: "Dettaglio bonus",
+        viewPlayer: "Apri dettaglio",
       },
       auction: {
         title: "Asta",
@@ -504,6 +547,31 @@ const resources = {
         goals: "Gol",
         assists: "Assist",
         minutes: "Minuti",
+      },
+      playerDetails: {
+        title: "Dettaglio giocatore",
+        subtitle:
+          "Seleziona un giocatore per analizzare metriche chiave, andamento per giornata, bonus nel tempo, mappa tiri e profili simili.",
+        searchTitle: "Seleziona giocatore",
+        selectPrompt: "Seleziona un giocatore per aprire la vista dettagliata.",
+        overviewTag: "Panoramica",
+        trendTag: "Trend",
+        heatmapTag: "Mappa tiri",
+        piRank: "Posizione PI {{rank}}/{{total}} (Top {{percentile}}%)",
+        fixtureTrendTitle: "Performance stagionale per giornata",
+        fixtureTrendDescription:
+          "Segui l'output fantacalcio durante la stagione e individua i periodi migliori o peggiori.",
+        bonusTrendTitle: "Eventi bonus nel tempo",
+        bonusTrendDescription:
+          "Dettaglio impilato degli eventi bonus positivi e negativi per ogni giornata.",
+        shotMapTitle: "Mappa tiri",
+        shotMapDescription:
+          "Visualizza da dove conclude il giocatore e la qualita delle occasioni create.",
+        similarPlayersTitle: "Giocatori piu simili",
+        similarPlayersDescription:
+          "Profili piu vicini in base all'endpoint di similarita disponibile e al confronto PI.",
+        playerNotFound:
+          "Nessun giocatore trovato con ID {{playerId}}. Seleziona un altro giocatore dalla ricerca.",
       },
     },
   },

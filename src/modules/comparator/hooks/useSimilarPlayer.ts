@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { API_BASE_URL } from "../../../_common/constants";
 import { Player } from "../../../_common/types";
 
@@ -33,4 +33,44 @@ export function useSimilarPlayer() {
   }, []);
 
   return { isLoading, similarPlayers, fetchSimilarPlayer };
+}
+
+export function useSimilarPlayers(playerId: number | null | undefined) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [similarPlayers, setSimilarPlayers] = useState<Player[] | null>(null);
+
+  useEffect(() => {
+    let ignore = false;
+
+    if (typeof playerId !== "number") {
+      setSimilarPlayers(null);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
+    fetchSimilarPlayerById(playerId)
+      .then(data => {
+        if (!ignore) {
+          setSimilarPlayers(data);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setSimilarPlayers([]);
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [playerId]);
+
+  return { isLoading, similarPlayers };
 }

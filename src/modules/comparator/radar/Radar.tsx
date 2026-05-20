@@ -2,7 +2,13 @@ import { Radar as RadarChartJS } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
 import { Player } from "../../../_common/types";
 
-export function Radar({ player1, player2 }: { player1: Player | null; player2: Player | null }) {
+export function RadarComparison({
+  player1,
+  player2,
+}: {
+  player1: Player | null;
+  player2: Player | null;
+}) {
   const { t } = useTranslation();
 
   if (!player1 || !player2) {

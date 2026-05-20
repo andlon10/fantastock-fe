@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlayerDetailsIndexRouteImport } from './routes/player-details/index'
 import { Route as OfferComparatorIndexRouteImport } from './routes/offer-comparator/index'
 import { Route as ComparatorIndexRouteImport } from './routes/comparator/index'
 import { Route as AuctionIndexRouteImport } from './routes/auction/index'
+import { Route as PlayerDetailsPlayerIdRouteImport } from './routes/player-details/$playerId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayerDetailsIndexRoute = PlayerDetailsIndexRouteImport.update({
+  id: '/player-details/',
+  path: '/player-details/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OfferComparatorIndexRoute = OfferComparatorIndexRouteImport.update({
@@ -34,39 +41,71 @@ const AuctionIndexRoute = AuctionIndexRouteImport.update({
   path: '/auction/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlayerDetailsPlayerIdRoute = PlayerDetailsPlayerIdRouteImport.update({
+  id: '/player-details/$playerId',
+  path: '/player-details/$playerId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/player-details/$playerId': typeof PlayerDetailsPlayerIdRoute
   '/auction/': typeof AuctionIndexRoute
   '/comparator/': typeof ComparatorIndexRoute
   '/offer-comparator/': typeof OfferComparatorIndexRoute
+  '/player-details/': typeof PlayerDetailsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/player-details/$playerId': typeof PlayerDetailsPlayerIdRoute
   '/auction': typeof AuctionIndexRoute
   '/comparator': typeof ComparatorIndexRoute
   '/offer-comparator': typeof OfferComparatorIndexRoute
+  '/player-details': typeof PlayerDetailsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/player-details/$playerId': typeof PlayerDetailsPlayerIdRoute
   '/auction/': typeof AuctionIndexRoute
   '/comparator/': typeof ComparatorIndexRoute
   '/offer-comparator/': typeof OfferComparatorIndexRoute
+  '/player-details/': typeof PlayerDetailsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auction/' | '/comparator/' | '/offer-comparator/'
+  fullPaths:
+    | '/'
+    | '/player-details/$playerId'
+    | '/auction/'
+    | '/comparator/'
+    | '/offer-comparator/'
+    | '/player-details/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auction' | '/comparator' | '/offer-comparator'
-  id: '__root__' | '/' | '/auction/' | '/comparator/' | '/offer-comparator/'
+  to:
+    | '/'
+    | '/player-details/$playerId'
+    | '/auction'
+    | '/comparator'
+    | '/offer-comparator'
+    | '/player-details'
+  id:
+    | '__root__'
+    | '/'
+    | '/player-details/$playerId'
+    | '/auction/'
+    | '/comparator/'
+    | '/offer-comparator/'
+    | '/player-details/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PlayerDetailsPlayerIdRoute: typeof PlayerDetailsPlayerIdRoute
   AuctionIndexRoute: typeof AuctionIndexRoute
   ComparatorIndexRoute: typeof ComparatorIndexRoute
   OfferComparatorIndexRoute: typeof OfferComparatorIndexRoute
+  PlayerDetailsIndexRoute: typeof PlayerDetailsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/player-details/': {
+      id: '/player-details/'
+      path: '/player-details'
+      fullPath: '/player-details/'
+      preLoaderRoute: typeof PlayerDetailsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/offer-comparator/': {
@@ -99,14 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuctionIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/player-details/$playerId': {
+      id: '/player-details/$playerId'
+      path: '/player-details/$playerId'
+      fullPath: '/player-details/$playerId'
+      preLoaderRoute: typeof PlayerDetailsPlayerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PlayerDetailsPlayerIdRoute: PlayerDetailsPlayerIdRoute,
   AuctionIndexRoute: AuctionIndexRoute,
   ComparatorIndexRoute: ComparatorIndexRoute,
   OfferComparatorIndexRoute: OfferComparatorIndexRoute,
+  PlayerDetailsIndexRoute: PlayerDetailsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

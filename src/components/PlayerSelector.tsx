@@ -13,12 +13,7 @@ export default function PlayerSelector({ players, selectedPlayer, setSelectedPla
         setSelectedPlayer(newValue);
       }}
       renderInput={params => (
-        <TextField
-          {...params}
-          variant="outlined"
-          label={t("common.searchPlayerLabel")}
-          placeholder={t("common.typeToSearch")}
-        />
+        <TextField {...params} variant="outlined" placeholder={t("common.typeToSearch")} />
       )}
       isOptionEqualToValue={(option, value) => option.id === value.id}
     />

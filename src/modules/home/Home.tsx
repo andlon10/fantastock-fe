@@ -2,6 +2,7 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import InsightsIcon from "@mui/icons-material/Insights";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import SavingsIcon from "@mui/icons-material/Savings";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
@@ -64,8 +65,6 @@ export function Home() {
           <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 700, fontWeight: 400 }}>
             {t("home.subtitle")}
           </Typography>
-
-          {/* Removed hero action buttons for a cleaner hero section */}
         </Stack>
       </Paper>
 
@@ -194,6 +193,45 @@ export function Home() {
             sx={{ position: "absolute", bottom: 16, right: 16 }}
           >
             {t("home.compareOffers")}
+          </Button>
+        </Paper>
+
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            borderRadius: 3,
+            border: "1px solid",
+            borderColor: "divider",
+            backgroundColor: "#fff",
+            position: "relative",
+            minHeight: 270,
+          }}
+        >
+          <Stack spacing={1.5} sx={{ pb: 5 }}>
+            <Chip
+              icon={<PersonSearchIcon />}
+              label={t("home.playerDetailsChip")}
+              sx={{ alignSelf: "flex-start" }}
+            />
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              {t("home.playerDetailsTitle")}
+            </Typography>
+            <Typography color="text.secondary">{t("home.playerDetailsDescription")}</Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              <Chip size="small" label={t("home.playerOverview")} />
+              <Chip size="small" label={t("home.seasonTrend")} />
+              <Chip size="small" label={t("home.bonusBreakdown")} />
+            </Stack>
+          </Stack>
+          <Button
+            component={Link}
+            to="/player-details"
+            variant="text"
+            endIcon={<ArrowForwardIcon />}
+            sx={{ position: "absolute", bottom: 16, right: 16 }}
+          >
+            {t("home.viewPlayer")}
           </Button>
         </Paper>
       </Box>
